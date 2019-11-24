@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request,render_template
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as numpy
 import pandas as pd
@@ -15,7 +15,6 @@ import nltk
 
 
 
-import flask
 app = Flask(__name__)
 
 
@@ -38,13 +37,8 @@ def get_longest_substr_ratio(a, b):
 
 
 @app.route('/')
-def hello_world():
-    return 'Welcome!!!! Go to index page to perform similarity of questions'
-
-
-@app.route('/index')
 def index():
-    return flask.render_template('index.html')
+    return render_template('index.html')
 
 
 @app.route('/predict', methods=['POST'])
@@ -79,7 +73,7 @@ def predict():
     else:
         prediction = "NOT SIMILAR"
 
-    return jsonify({'prediction': prediction})
+    return render_template('result.html',prediction=prediction,q1=to_predict_list['q1'],q2=to_predict_list['q2'])
 
 
 if __name__ == '__main__':
